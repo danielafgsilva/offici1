@@ -1,26 +1,207 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  Offici'um — Contabilidade e Consultoria
+  Design system: premium, trustworthy, corporate finance.
+  Brand: light blue (#0090D9) + deep navy (#0B2545).
+  Fonts: Lexend (display) + Source Sans 3 (body).
+*/
+
+@theme {
+  /* Brand blue scale (anchored on the logo blue #0090D9) */
+  --color-brand-50: #eff9ff;
+  --color-brand-100: #def1ff;
+  --color-brand-200: #b6e6ff;
+  --color-brand-300: #75d3ff;
+  --color-brand-400: #2cbcff;
+  --color-brand-500: #0090d9;
+  --color-brand-600: #0078b8;
+  --color-brand-700: #006097;
+  --color-brand-800: #00517d;
+  --color-brand-900: #003a5c;
+  --color-brand-950: #00253c;
+
+  /* Deep navy ink (headings / text) */
+  --color-ink-50: #f3f6fb;
+  --color-ink-100: #e4ebf5;
+  --color-ink-200: #c4d3e8;
+  --color-ink-300: #91afd2;
+  --color-ink-400: #5b81b3;
+  --color-ink-500: #3a5f8f;
+  --color-ink-600: #2c4a73;
+  --color-ink-700: #1e3a5f;
+  --color-ink-800: #142a47;
+  --color-ink-900: #0b2545;
+  --color-ink-950: #061629;
+
+  /* Warm accent (ratings, subtle highlights) */
+  --color-gold-400: #fdb913;
+  --color-gold-500: #f59e0b;
+
+  /* Semantic */
+  --color-background: #ffffff;
+  --color-foreground: #0b2545;
+  --color-muted: #5b6b85;
+
+  /* Typography */
+  --font-sans: var(--font-source-sans), system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-lexend), var(--font-source-sans), system-ui,
+    sans-serif;
+
+  /* Easing */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-brand-500);
+    color: #fff;
+  }
+
+  /* Visible, on-brand focus ring for keyboard users */
+  :focus-visible {
+    outline: 3px solid var(--color-brand-400);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Subtle dotted hero backdrop */
+  .bg-grid {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(11, 37, 69, 0.06) 1px,
+      transparent 0
+    );
+    background-size: 28px 28px;
+  }
+
+  /* Soft radial glow used behind hero / CTA */
+  .bg-aurora {
+    background:
+      radial-gradient(60% 60% at 80% 10%, rgba(0, 144, 217, 0.16), transparent 60%),
+      radial-gradient(55% 55% at 10% 30%, rgba(44, 188, 255, 0.12), transparent 60%),
+      radial-gradient(50% 80% at 50% 110%, rgba(11, 37, 69, 0.06), transparent 60%);
+  }
+
+  .text-gradient {
+    background: linear-gradient(
+      100deg,
+      var(--color-ink-900) 0%,
+      var(--color-brand-700) 60%,
+      var(--color-brand-500) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Card with refined elevation + hover lift */
+  .card-surface {
+    background: #fff;
+    border: 1px solid var(--color-ink-100);
+    box-shadow:
+      0 1px 2px rgba(11, 37, 69, 0.04),
+      0 8px 24px -16px rgba(11, 37, 69, 0.18);
+    transition:
+      transform 0.25s var(--ease-out-quart),
+      box-shadow 0.25s var(--ease-out-quart),
+      border-color 0.25s var(--ease-out-quart);
+  }
+
+  .card-surface:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-brand-200);
+    box-shadow:
+      0 2px 4px rgba(11, 37, 69, 0.05),
+      0 24px 48px -24px rgba(0, 144, 217, 0.28);
+  }
+
+  /* Line-mask wrapper for text reveal animations */
+  .reveal-mask {
+    overflow: hidden;
+    display: block;
+  }
+
+  /* Animated underline for editorial links */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1.5px;
+    transition: background-size 0.4s var(--ease-out-quart);
+  }
+  .link-underline:hover {
+    background-size: 100% 1.5px;
+  }
+
+  /* Faint film grain for the dark editorial section */
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+}
+
+/* Marquee scroll */
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee-x var(--marquee-duration, 28s) linear infinite;
+}
+
+.marquee-paused:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
