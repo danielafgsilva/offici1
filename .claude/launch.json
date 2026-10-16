@@ -1,0 +1,49 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "/Users/danielasilva/.local/node/bin/npm",
+      "runtimeArgs": [
+        "--prefix",
+        "web",
+        "run",
+        "dev"
+      ],
+      "env": {
+        "PATH": "/Users/danielasilva/.local/node/bin:/usr/bin:/bin"
+      },
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "studio",
+      "runtimeExecutable": "/Users/danielasilva/.local/node/bin/npm",
+      "runtimeArgs": [
+        "--prefix",
+        "studio",
+        "run",
+        "dev"
+      ],
+      "env": {
+        "PATH": "/Users/danielasilva/.local/node/bin:/usr/bin:/bin"
+      },
+      "port": 3333
+    },
+    {
+      "name": "prod",
+      "runtimeExecutable": "/Users/danielasilva/.local/node/bin/npm",
+      "runtimeArgs": [
+        "--prefix",
+        "web",
+        "run",
+        "start"
+      ],
+      "env": {
+        "PATH": "/Users/danielasilva/.local/node/bin:/usr/bin:/bin",
+        "PORT": "3100"
+      },
+      "port": 3100
+    }
+  ]
+}

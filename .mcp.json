@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "/Users/danielasilva/.local/node/bin/npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "env": { "PATH": "/Users/danielasilva/.local/node/bin:/usr/bin:/bin" }
+    }
+  }
+}

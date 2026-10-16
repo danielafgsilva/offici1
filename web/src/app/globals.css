@@ -1,0 +1,726 @@
+@import "tailwindcss";
+
+/*
+ * Offici'um design foundation. Deliberately small: add a token only when a
+ * second real use appears.
+ */
+@theme {
+  /* Colour — navy and blue from the brand, on warm neutrals */
+  --color-paper: #f3f4f1; /* page background: a cool paper white */
+  --color-sand: #e7e6e0; /* alternate section background */
+  --color-line: #d9d6ce; /* stone: hairlines and the empty portrait tiles */
+  --color-offwhite: #f7f6f2; /* text on navy and on blue */
+  --color-navy: #1a365d; /* headings, dark sections */
+  --color-ink: #3a4658; /* body text */
+  --color-muted: #5c6777; /* secondary text */
+  --color-blue: #0b6cb0; /* the brand blue, used as one full surface per page */
+  --color-navy-dark: #14294a; /* button hover */
+  --color-sky: #0090d9; /* brand accent: decorative and focus rings only */
+  --color-error: #b3261e; /* form errors */
+
+  /* One family, the logo's own (Montserrat): titles take the weight and size of the OFFICI'UM wordmark, text the lighter weight of its tagline */
+  --font-display: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+
+  /*
+   * Type scale. Hierarchy comes from typeface and scale: the display steps (names, hero,
+   * display, h1, h2) are large and tightly set; h3 and everything below are the text face.
+   */
+  --text-names: clamp(3rem, 0.5rem + 8vw, 8.5rem); /* the roll call: the loudest thing on the site */
+  --text-names--line-height: 0.93;
+  --text-hero: clamp(2.5rem, 1rem + 6.4vw, 7.25rem); /* one-word page titles */
+  --text-hero--line-height: 0.98;
+  --text-display: clamp(2.25rem, 1.4rem + 3.8vw, 4.25rem); /* page statements */
+  --text-display--line-height: 1.04;
+  --text-h1: clamp(2rem, 1.5rem + 2.4vw, 3.25rem); /* page titles */
+  --text-h1--line-height: 1.06;
+  --text-h2: clamp(1.625rem, 1.3rem + 1.5vw, 2.5rem); /* section titles */
+  --text-h2--line-height: 1.1;
+  --text-h3: 1.25rem; /* item titles */
+  --text-h3--line-height: 1.35;
+  --text-lead: clamp(1.125rem, 1.06rem + 0.3vw, 1.3125rem); /* opening paragraphs */
+  --text-lead--line-height: 1.55;
+
+  --text-xs: 0.8125rem; /* nothing meant to be read goes below 13px */
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.55;
+
+  --radius-sm: 0.5rem; /* inputs, small panels */
+  --radius-md: 1rem; /* panels, photographs; buttons are always pills */
+
+  /* The only shadow: sticky header and overlays */
+  --shadow-raised: 0 1px 2px rgb(26 54 93 / 0.06), 0 8px 24px rgb(26 54 93 / 0.08);
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+:root {
+  --duration-fast: 150ms; /* hover, focus */
+  --duration-slow: 500ms; /* reveals */
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem; /* clears the sticky header */
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  h1,
+  h2,
+  h3 {
+    color: var(--color-navy);
+    text-wrap: balance;
+  }
+
+  h1,
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  h3 {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-sky);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  ::selection {
+    background: var(--color-navy);
+    color: white;
+  }
+
+  /* Very wide screens: the whole page, type and column together, is set one step larger */
+  @media (min-width: 112.5rem) {
+    html {
+      font-size: 112.5%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    /* Entrance animations are removed outright, so content is simply there; a shortened
+       animation with a delay can leave an element stuck at its hidden starting frame. */
+    *,
+    ::before,
+    ::after {
+      animation: none !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Layout */
+@utility container-page {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+/* For a full-width sideways scroller: its content starts where the page column starts */
+@utility bleed-inset {
+  padding-inline: max(clamp(1.25rem, 4vw, 2.5rem), calc((100vw - 76rem) / 2 + 2.5rem));
+}
+
+/* Narrow column for running text */
+@utility measure {
+  max-width: 38rem; /* about 70 characters of body text */
+}
+
+/*
+ * Vertical rhythm. Three steps, used on purpose: tight for credentials and asides,
+ * the default for structured content, loose for people and for the closing invitation.
+ */
+@utility section-sm {
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+}
+
+@utility section {
+  padding-block: clamp(4rem, 8vw, 7rem);
+}
+
+@utility section-lg {
+  padding-block: clamp(5rem, 11vw, 9.5rem);
+}
+
+/* Opening section of an inner page: sits closer to the header than a full section */
+@utility page-top {
+  padding-top: clamp(2.5rem, 5vw, 4.5rem);
+  padding-bottom: clamp(4rem, 8vw, 7rem);
+}
+
+/* Numbers set like figures in a set of accounts */
+@utility figures {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Small uppercase label above a heading */
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: var(--color-muted);
+}
+
+/* Buttons */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+
+  /* Trailing arrow nudges on hover */
+  & svg {
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    &:hover svg {
+      transform: translateX(3px);
+    }
+  }
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+/* Navy glass: translucent over whatever scrolls under it, with a lit top edge */
+/* A larger button for the one action a section exists for */
+@utility btn-lg {
+  min-height: 3.25rem;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+}
+
+@utility btn-primary {
+  background: rgb(26 54 93 / 0.9);
+  color: var(--color-offwhite);
+  border-color: rgb(255 255 255 / 0.18);
+  backdrop-filter: blur(10px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.28),
+    0 6px 18px rgb(26 54 93 / 0.22);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: var(--color-navy-dark);
+    }
+  }
+}
+
+/* Glass, no outline: a translucent fill that blurs what is behind it, lit along its top edge. On hover it
+   clearly thickens and lifts. btn-glass is white for dark surfaces, btn-glass-navy is navy for light ones. */
+@utility btn-glass {
+  background: rgb(255 255 255 / 0.12);
+  color: white;
+  backdrop-filter: blur(16px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.45),
+    0 8px 24px rgb(0 0 0 / 0.16);
+  transition:
+    background-color 180ms var(--ease-out),
+    transform 180ms var(--ease-out);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: rgb(255 255 255 / 0.3);
+      transform: translateY(-2px);
+    }
+  }
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+@utility btn-glass-navy {
+  background: rgb(26 54 93 / 0.1);
+  color: var(--color-navy);
+  backdrop-filter: blur(16px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.7),
+    0 8px 24px rgb(26 54 93 / 0.12);
+  transition:
+    background-color 180ms var(--ease-out),
+    transform 180ms var(--ease-out);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: rgb(26 54 93 / 0.24);
+      transform: translateY(-2px);
+    }
+  }
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+@utility btn-secondary {
+  border-color: var(--color-navy);
+  color: var(--color-navy);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: var(--color-navy);
+      color: white;
+    }
+  }
+}
+
+/* Inline text link: underline thickens on hover */
+@utility link {
+  color: var(--color-navy);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: text-decoration-thickness var(--duration-fast) var(--ease-out);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      text-decoration-thickness: 2px;
+    }
+  }
+}
+
+/* Photographs: one radius, never stretched */
+@utility photo {
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  background: var(--color-sand);
+}
+
+/* The one orchestrated moment on each page: words rise into place once, on load */
+@utility rise {
+  animation: rise 900ms var(--ease-out) both;
+  animation-delay: calc(var(--d, 0ms) + var(--intro, 0ms));
+}
+
+/* A shorter rise for things people open often, such as the menu */
+@utility rise-quick {
+  animation: rise 250ms var(--ease-out) both;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(110%);
+  }
+}
+
+/* A firm hairline in navy that opens a list or a block */
+@utility rule {
+  border-top: 1px solid var(--color-navy);
+}
+
+
+/* Header navigation link: underline grows from the left; stays for the current page */
+@utility nav-link {
+  position: relative;
+  display: inline-block;
+  padding-block: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-navy);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 2px;
+    background: var(--color-navy);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    &:hover::after {
+      transform: scaleX(1);
+    }
+  }
+  &[aria-current="page"]::after {
+    transform: scaleX(1);
+  }
+  &[aria-current="page"] {
+    font-weight: 600;
+  }
+}
+
+/*
+ * The header is absent at the top of a page and arrives over the first stretch of scrolling, driven by the scroll
+ * position itself (no script). Where that is unsupported it is simply always there. Focus inside it shows it at once.
+ */
+@supports (animation-timeline: scroll()) {
+  .site-header {
+    animation: header-arrive linear both;
+    animation-timeline: scroll(root);
+    animation-range: 2rem 7rem;
+  }
+  .site-header:focus-within {
+    animation: none;
+  }
+}
+
+/* The menu button: always there on phones and tablets. On desktop the bar's own links take over once it arrives, so
+   the button is there only at the top and fades out with the bar's arrival. */
+@media (min-width: 80rem) {
+  .menu-fab {
+    display: none;
+  }
+  @supports (animation-timeline: scroll()) {
+    .menu-fab {
+      display: flex;
+      animation: fab-leave linear both;
+      animation-timeline: scroll(root);
+      animation-range: 2rem 7rem;
+    }
+  }
+}
+
+@keyframes fab-leave {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes header-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+/* Full-height panel sliding in from the right */
+@utility mobile-menu {
+  position: fixed;
+  inset: 0 0 0 auto;
+  width: min(100%, 24rem);
+  height: 100dvh;
+  max-height: none;
+  max-width: none;
+  margin: 0;
+  background: var(--color-paper);
+  box-shadow: var(--shadow-raised);
+  overflow-y: auto;
+
+  &[open] {
+    animation: slide-in 250ms var(--ease-out);
+  }
+  &::backdrop {
+    background: rgb(26 54 93 / 0.4);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+/* No page scroll behind the open mobile menu */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+/* Form fields */
+@utility field-label {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-weight: 600;
+  color: var(--color-navy);
+}
+
+@utility field {
+  display: block;
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.75rem 1.125rem;
+  /* A soft filled field: no outline until it is hovered or has focus */
+  border: 1.5px solid transparent;
+  border-radius: 1rem;
+  background: #eef3f8;
+  color: var(--color-navy);
+  font-size: 1rem; /* 16px minimum avoids zoom-on-focus on iOS */
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+
+  /* background-color, never the shorthand: it would wipe a dropdown's arrow */
+  &:hover {
+    background-color: #e6eef6;
+  }
+  &:focus {
+    border-color: var(--color-navy);
+    background-color: white;
+  }
+  &[aria-invalid="true"] {
+    border-color: var(--color-error);
+  }
+
+  /* A dropdown looks like the other fields: the browser's own arrow is replaced by a navy chevron */
+  &:is(select) {
+    appearance: none;
+    padding-right: 3rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 256 256' fill='none' stroke='%231a365d' stroke-width='24' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m208 96-80 80-80-80'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1.125rem center;
+    background-size: 1.25rem;
+    cursor: pointer;
+  }
+  &:is(select) option {
+    background: white;
+    color: var(--color-navy);
+  }
+}
+
+/* Standalone links: a comfortable 44px touch target without changing how the text looks */
+@utility tap {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+}
+
+/* Purely decorative lettering (the giant name, the pale index numerals): drawn by CSS from
+   data-ghost, so it is not text for assistive technology, search engines or contrast checks. */
+@utility ghost {
+  &::before {
+    content: attr(data-ghost);
+  }
+}
+
+/*
+ * The signature line: the one graphic idea. A heavy rule that a name sits on, as on the
+ * sign-off block of a document. Used only where a person signs: the team's names, the
+ * portrait tiles, and the line where a visitor writes their company's name.
+ */
+@utility signature {
+  padding-bottom: 0.3em;
+  border-bottom: 4px solid var(--color-navy);
+}
+
+/* The visitor's own signature line, on the contact form */
+@utility field-signature {
+  display: block;
+  width: 100%;
+  min-height: 3.75rem;
+  padding: 0.25rem 0 0.5rem;
+  border: 0;
+  border-bottom: 4px solid var(--color-navy);
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-navy);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.2;
+
+  &::placeholder {
+    color: var(--color-muted);
+    opacity: 1;
+  }
+}
+
+@keyframes photo-unmask {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+
+/*
+ * Home hero, on load: the photograph settles from a slight enlargement and the people
+ * photograph is unmasked from the bottom, after the headline has risen. Once.
+ */
+@utility unmask-load {
+  animation: photo-unmask 1100ms var(--ease-out) both;
+  animation-delay: calc(600ms + var(--intro, 0ms));
+}
+
+/* A service panel fills with white from below on hover and focus: the same mask, opened by the visitor */
+@utility panel {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-navy);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 250ms var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    &:hover::before {
+      transform: scaleY(1);
+    }
+  }
+  &:focus-visible::before {
+    transform: scaleY(1);
+  }
+  &:active {
+    transform: scale(0.985);
+  }
+}
+
+/* A hairline that is drawn from the left as it scrolls into view; still, and complete, where unsupported */
+@supports (animation-timeline: view()) {
+  .draw-in-view {
+    transform-origin: left;
+    animation: draw linear both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 35%;
+  }
+}
+
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/*
+ * The first-visit intro. Set by a small script in the page head (once per session, never under reduced
+ * motion), so without it nothing here applies. The five names rise one by one and sign their line, then the
+ * curtain lifts and the hero's words rise as it goes (the hero waits --intro, which the script removes afterwards).
+ */
+html[data-intro] {
+  --intro: 1200ms;
+}
+
+.intro {
+  display: none;
+}
+
+html[data-intro] .intro {
+  display: flex;
+  animation: intro-lift 550ms var(--ease-out) 1200ms both;
+}
+
+.intro-name {
+  animation: rise 600ms var(--ease-out) both;
+  animation-delay: var(--d, 0ms);
+}
+
+.intro-line {
+  transform-origin: left;
+  animation: draw 600ms var(--ease-out) 600ms both;
+}
+
+@keyframes intro-lift {
+  to {
+    transform: translateY(-100%);
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none !important;
+  }
+}
+
+/* The services drift: the track holds two copies and moves by half its width, so the loop has no seam */
+.marquee-track {
+  animation: drift var(--drift, 55s) linear infinite;
+}
+
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes drift {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  }
+  .marquee-clone {
+    display: none;
+  }
+}
+
+/* A card's extra line appears on hover or focus (opacity and a small rise, no layout), and is simply there where
+   there is no hover (touch). Its space is always reserved. */
+.reveal {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .panel:hover .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.panel:focus-visible .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Frosted white at rest, turning blue on hover: for the hero and the "Desde" section */
+@utility btn-frost {
+  background: rgb(255 255 255 / 0.72);
+  color: var(--color-navy);
+  backdrop-filter: blur(16px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    0 8px 24px rgb(26 54 93 / 0.16);
+  transition:
+    background-color 200ms var(--ease-out),
+    color 200ms var(--ease-out),
+    transform 180ms var(--ease-out);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: rgb(26 54 93 / 0.92);
+      color: white;
+      transform: translateY(-2px);
+    }
+  }
+  &:active {
+    transform: scale(0.97);
+  }
+}
