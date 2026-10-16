@@ -2,13 +2,48 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "offici1",
-      "runtimeExecutable": "/bin/zsh",
+      "name": "dev",
+      "runtimeExecutable": "/Users/danielasilva/.local/node/bin/npm",
       "runtimeArgs": [
-        "-c",
-        "export PATH=\"/Users/danielasilva/Library/Application Support/Herd/config/nvm/versions/node/v22.19.0/bin:$PATH\"; exec npm run dev"
+        "--prefix",
+        "web",
+        "run",
+        "dev"
       ],
-      "port": 3000
+      "env": {
+        "PATH": "/Users/danielasilva/.local/node/bin:/usr/bin:/bin"
+      },
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "studio",
+      "runtimeExecutable": "/Users/danielasilva/.local/node/bin/npm",
+      "runtimeArgs": [
+        "--prefix",
+        "studio",
+        "run",
+        "dev"
+      ],
+      "env": {
+        "PATH": "/Users/danielasilva/.local/node/bin:/usr/bin:/bin"
+      },
+      "port": 3333
+    },
+    {
+      "name": "prod",
+      "runtimeExecutable": "/Users/danielasilva/.local/node/bin/npm",
+      "runtimeArgs": [
+        "--prefix",
+        "web",
+        "run",
+        "start"
+      ],
+      "env": {
+        "PATH": "/Users/danielasilva/.local/node/bin:/usr/bin:/bin",
+        "PORT": "3100"
+      },
+      "port": 3100
     }
   ]
 }
