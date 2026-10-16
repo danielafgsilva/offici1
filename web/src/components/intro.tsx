@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
+import { LINE, TAGLINE, WORD } from "./logo";
 
-// The names of the team, rising one by one over navy, then the curtain lifts. Shown once per session
+// The first-visit intro, drawn from the logo: the disc settles, the rising line is drawn across it from end to end,
+// the two dots land as the line reaches them, then the name is wiped in; then the curtain lifts. Shown once per session
 // (the script in the page head decides); purely visual, so assistive technology skips it.
-export function Intro({ names }: { names: string[] }) {
+export function Intro() {
   // Once the curtain is up, hero animations go back to starting immediately; a click or a key skips it at any time
   useEffect(() => {
     const end = () => delete document.documentElement.dataset.intro;
@@ -18,23 +20,30 @@ export function Intro({ names }: { names: string[] }) {
     };
   }, []);
 
-  if (names.length === 0) return null;
-
   return (
-    <div aria-hidden="true" className="intro fixed inset-0 z-[100] flex-col justify-center bg-navy px-[clamp(1.25rem,4vw,2.5rem)] text-offwhite">
-      <ul className="mx-auto flex w-full max-w-[76rem] flex-wrap gap-x-[0.3em] font-display text-[clamp(2.25rem,8vw,6.5rem)] leading-[1.02] font-semibold tracking-[-0.03em]">
-        {names.map((name, index) => (
-          <li key={name} className="-mb-[0.14em] overflow-hidden pb-[0.14em]">
-            <span className="intro-name inline-block" style={{ "--d": `${100 + index * 80}ms` } as React.CSSProperties}>
-              {name}
-              {index < names.length - 1 ? "," : "."}
-            </span>
-          </li>
-        ))}
-      </ul>
-      <div className="mx-auto mt-6 w-full max-w-[76rem]">
-        <div className="intro-line h-1 w-full rounded-full bg-sky" />
-      </div>
+    <div aria-hidden="true" className="intro fixed inset-0 z-[100] flex items-center justify-center bg-navy px-6">
+      <svg viewBox="75 20 1198 212" className="w-[min(86vw,34rem)]">
+        <defs>
+          <radialGradient id="intro-fill" cx="267" cy="128" r="130" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor="#ffffff" />
+            <stop offset=".55" stopColor="#f1f6fb" />
+            <stop offset="1" stopColor="#dbe8f4" />
+          </radialGradient>
+          {/* The gap the line leaves in the disc is drawn with the line */}
+          <mask id="intro-band" maskUnits="userSpaceOnUse" x="130" y="10" width="274" height="232">
+            <rect x="130" y="10" width="274" height="232" fill="#fff" />
+            <path d={LINE} pathLength={1} fill="none" stroke="#000" strokeWidth="27" strokeMiterlimit="10" className="intro-draw" />
+          </mask>
+        </defs>
+        <ellipse cx="267" cy="125.7" rx="126" ry="105" fill="url(#intro-fill)" mask="url(#intro-band)" className="intro-disc" />
+        <path d={LINE} pathLength={1} fill="none" stroke="#1f9ad8" strokeWidth="5.5" strokeLinejoin="round" className="intro-draw" />
+        <circle cx="85" cy="172.7" r="9.5" fill="#1f9ad8" className="intro-dot" style={{ animationDelay: "120ms" }} />
+        <circle cx="450" cy="84" r="9.5" fill="#1f9ad8" className="intro-dot" style={{ animationDelay: "760ms" }} />
+        <g transform="translate(478.25 -356.3) scale(1.5)" className="intro-word">
+          <path d={WORD} fill="#1c9ad6" />
+          <path d={TAGLINE} fill="#f7f6f2" />
+        </g>
+      </svg>
     </div>
   );
 }

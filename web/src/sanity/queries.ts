@@ -70,9 +70,8 @@ export const TESTIMONIALS_QUERY = defineQuery(
   `*[_type == "testimonial"] | order(order asc){ _id, quote, author, company, verified, photo }`,
 );
 
-// Only what a page needs from the team: how many people, and their names
+// Only what a page needs from the team: how many people
 export const TEAM_COUNT_QUERY = defineQuery(`count(*[_type == "teamMember"])`);
-export const TEAM_NAMES_QUERY = defineQuery(`*[_type == "teamMember"] | order(order asc).name`);
 
 export const FAQ_QUERY = defineQuery(
   `*[_type == "faq"] | order(order asc){ _id, question, answer }`,

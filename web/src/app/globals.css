@@ -626,14 +626,49 @@ html[data-intro] .intro {
   animation: intro-lift 550ms var(--ease-out) 1200ms both;
 }
 
-.intro-name {
-  animation: rise 600ms var(--ease-out) both;
-  animation-delay: var(--d, 0ms);
+/* The logo draws itself: the disc settles, the line is drawn end to end, the dots land, the name is wiped in */
+.intro-disc {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: intro-settle 500ms var(--ease-out) both;
 }
 
-.intro-line {
-  transform-origin: left;
-  animation: draw 600ms var(--ease-out) 600ms both;
+.intro-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: intro-draw 700ms var(--ease-out) 150ms both;
+}
+
+.intro-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: intro-settle 300ms var(--ease-out) both;
+}
+
+.intro-word {
+  animation: intro-wipe 500ms var(--ease-out) 650ms both;
+}
+
+@keyframes intro-settle {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+
+@keyframes intro-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes intro-wipe {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
 }
 
 @keyframes intro-lift {

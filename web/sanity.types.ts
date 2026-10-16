@@ -757,11 +757,6 @@ export type TESTIMONIALS_QUERY_RESULT = Array<{
 export type TEAM_COUNT_QUERY_RESULT = number;
 
 // Source: ../web/src/sanity/queries.ts
-// Variable: TEAM_NAMES_QUERY
-// Query: *[_type == "teamMember"] | order(order asc).name
-export type TEAM_NAMES_QUERY_RESULT = Array<string | null>;
-
-// Source: ../web/src/sanity/queries.ts
 // Variable: FAQ_QUERY
 // Query: *[_type == "faq"] | order(order asc){ _id, question, answer }
 export type FAQ_QUERY_RESULT = Array<{
@@ -788,7 +783,6 @@ declare global {
     '*[_type == "client"] | order(order asc){ _id, name, sector, verified, logo }': CLIENTS_QUERY_RESULT;
     '*[_type == "testimonial"] | order(order asc){ _id, quote, author, company, verified, photo }': TESTIMONIALS_QUERY_RESULT;
     'count(*[_type == "teamMember"])': TEAM_COUNT_QUERY_RESULT;
-    '*[_type == "teamMember"] | order(order asc).name': TEAM_NAMES_QUERY_RESULT;
     '*[_type == "faq"] | order(order asc){ _id, question, answer }': FAQ_QUERY_RESULT;
   }
 }
